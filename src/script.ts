@@ -1,42 +1,68 @@
 import { questionList } from "./questionsList";
 
-const questionContainer = document.getElementById("questions-container");
+class QuizGame {
+  private container: HTMLElement;
+  private nextBtnContainer: HTMLDivElement | null;
+  private currentIndex: number;
+  private nextBtn: HTMLDivElement;
 
-function createQuestion(num = 0) {
-  console.log("function execurte");
+  constructor(containerId: string, nextContainerId: string) {
+    this.container = document.getElementById(containerId)!;
+    this.nextBtnContainer = document.querySelector(nextContainerId);
+    this.currentIndex = 0;
 
-  const questionLabel = document.createElement("div");
-  const ques = document.createElement("p");
-  const optionsContainer = document.createElement("div");
-  questionContainer!.innerHTML = "";
-  if (num >= questionList.length) {
-    questionContainer!.innerHTML = "game over";
-    next!.style.display = "none";
+    this.nextBtn = document.createElement("div");
+    this.nextBtn.textContent = "Start";
+    this.nextBtn.addEventListener("click", this.goToNextQuestion.bind(this));
+    this.nextBtnContainer?.append(this.nextBtn);
   }
 
-  ques.textContent = questionList[num].question;
-  const options = questionList[num].options;
-  options.map((option) => {
-    const opt = document.createElement("p");
-    opt.textContent = option;
-    optionsContainer.append(opt);
-  });
+  private renderQuestion(index: number) {
+    console.log("function execute");
+    this.container.innerHTML = "";
 
-  questionLabel.append(ques, optionsContainer);
-  questionContainer?.append(questionLabel);
+    if (index >= questionList.length) {
+      this.container.innerHTML = "Game Over";
+      this.nextBtn.style.display = "none";
+      return;
+    }
+
+    const questionLabel = document.createElement("div");
+    questionLabel.id = "question";
+
+    const ques = document.createElement("p");
+    ques.textContent = questionList[index].question;
+
+    const optionsContainer = document.createElement("div");
+    optionsContainer.id = "options";
+
+    questionList[index].options.forEach((option, idx) => {
+      const btn = document.createElement("button");
+      btn.id = idx.toString();
+      btn.textContent = option;
+      optionsContainer.append(btn);
+    });
+
+    questionLabel.append(ques, optionsContainer);
+    this.container.append(questionLabel);
+
+    optionsContainer.addEventListener("click", (e: Event) => {
+      const target = e.target as HTMLElement;
+      const btnId = target.closest("button")?.id;
+      const selectedIndex = Number(btnId);
+      // this.checkIfCorrect(index, selectedIndex);
+    });
+  }
+
+  private goToNextQuestion() {
+    console.log("next btn click");
+    this.nextBtn.textContent = "Next";
+    this.renderQuestion(this.currentIndex++);
+    console.log(this.currentIndex);
+  }
 }
 
-const nextBtn = document.createElement("div");
-nextBtn.textContent = "Start";
+// Usage:
+new QuizGame("questions-container", "#next");
 
-let i = 0;
-nextBtn.addEventListener("click", () => {
-  console.log("next btn click");
-  nextBtn.textContent = "next";
-  createQuestion(i++);
-  console.log(i);
-});
-
-const next: HTMLDivElement | null = document.querySelector("#next");
-
-next?.append(nextBtn);
+// TODO:

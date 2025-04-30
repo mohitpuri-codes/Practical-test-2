@@ -6,6 +6,7 @@
     "start": "parcel ./src/index.html ",
     "build": "parcel build ./index.html --public-url ./ --no-autoinstall --no-optimize ",
     "test": "echo \"Error: no test specified\" && exit 1",
+
     "lint":"eslint src"
   },
   "author": "",

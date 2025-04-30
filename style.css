@@ -19,7 +19,8 @@
   justify-content: space-around;
 }
 
-#questions-container {
+#questions-container,
+#next {
   display: flex;
   gap: 10px;
   margin: 0 auto;

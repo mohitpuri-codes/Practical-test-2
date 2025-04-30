@@ -27,16 +27,14 @@ function createQuestion(num = 0) {
 }
 
 const nextBtn = document.createElement("div");
-nextBtn.textContent = "Next";
+nextBtn.textContent = "Start";
 
 let i = 0;
 nextBtn.addEventListener("click", () => {
   console.log("next btn click");
-
-  createQuestion(i);
+  nextBtn.textContent = "next";
+  createQuestion(i++);
   console.log(i);
-
-  i++;
 });
 
 const next: HTMLDivElement | null = document.querySelector("#next");
